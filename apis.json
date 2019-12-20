@@ -1,0 +1,84 @@
+{
+    "name": "Zemanta",
+    "description": "Zemanta is an omni-channel programmatic native DSP for media agencies to automate paid content promotion across 25+ programmatic networks & exchanges.",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/539-zemanta.jpg",
+    "tags": [
+        "api united kingdom",
+        "have api",
+        "recommendations",
+        "semantic",
+        "tags",
+        "text analysis"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/zemanta\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Zemanta",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/539-zemanta.jpg",
+            "humanURL": "http:\/\/www.zemanta.com\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/zemanta-openapi.json"
+                },
+                {
+                    "type": "x-postman-collecction",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/zemanta-postman-collection.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Blog",
+            "url": "http:\/\/www.zemanta.com\/blog\/"
+        },
+        {
+            "type": "Blog RSS",
+            "url": "http:\/\/www.zemanta.com\/fruitblog\/feed\/"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/zemanta"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "http:\/\/www.crunchbase.com\/company\/zemanta"
+        },
+        {
+            "type": "Email",
+            "url": "info@zemanta.com"
+        },
+        {
+            "type": "Email",
+            "url": "info+privacy@zemanta.com"
+        },
+        {
+            "type": "Email",
+            "url": "support@zemanta.com"
+        },
+        {
+            "type": "Email",
+            "url": "legal@zemanta.com"
+        },
+        {
+            "type": "Github",
+            "url": "https:\/\/github.com\/Zemanta"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/zemanta"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/www.zemanta.com\/"
+        }
+    ]
+}
