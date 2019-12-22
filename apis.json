@@ -10,8 +10,8 @@
         "tags",
         "text analysis"
     ],
-    "created": "2019-12-19",
-    "modified": "2019-12-19",
+    "created": "2019-12-22",
+    "modified": "2019-12-22",
     "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/zemanta\/master\/apis.json",
     "specificationVersion": "0.14",
     "apis": [
@@ -24,18 +24,18 @@
             "tags": [],
             "properties": [
                 {
-                    "type": "x-openapi",
-                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/zemanta-openapi.json"
-                },
-                {
                     "type": "x-postman-collecction",
-                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/zemanta-postman-collection.json"
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/zemanta\/master\/zemanta-postman-collection.json"
                 }
             ]
         }
     ],
     "include": [],
     "x-common": [
+        {
+            "type": "APIs.json",
+            "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/apis.json"
+        },
         {
             "type": "Blog",
             "url": "http:\/\/www.zemanta.com\/blog\/"
