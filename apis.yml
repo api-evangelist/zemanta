@@ -1,8 +1,24 @@
 aid: zemanta
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/zemanta.png
 name: Zemanta
-description: Zemanta is a company surfaced as a portfolio company of seedcamp, union-square-ventures and
-  added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: Zemanta was a native advertising and content-recommendation technology company founded in 2007
+  (Ljubljana, Slovenia and New York), best known for Zemanta One, a self-serve programmatic demand-side
+  platform (DSP) for native advertising. Zemanta was acquired by Outbrain in 2017 and its DSP has since been
+  folded into the Outbrain / Teads advertising platform. The standalone one.zemanta.com console now redirects
+  to dsp.outbrain.com and the former developers.zemanta.com API documentation is no longer resolvable, so
+  there is no live first-party Zemanta public API surface today. This profile is retained in the API
+  Evangelist network as a venture-portfolio lead with domain-level metadata.
 url: https://raw.githubusercontent.com/api-evangelist/zemanta/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,12 +26,19 @@ x-backed-by:
 - seedcamp
 - union-square-ventures
 x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier-reason: acquired-folded-into-outbrain-teads
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
+- Advertising
+- Native Advertising
+- Programmatic
+- DSP
+- AdTech
+- Content Recommendation
+- Marketing
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -23,5 +46,16 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/zemanta-domain-security.yml
 - type: Website
-  url: http://zemanta.com
+  url: https://zemanta.com
+- type: TermsOfService
+  url: https://vault.pactsafe.io/s/9ac72792-c7df-4d0d-832d-0ca873f73a64/legal.html#terms-of-service
+- type: PrivacyPolicy
+  url: https://www.outbrain.com/privacy/privacy-policy-outbrain-dsp/
+x-enrichment:
+  date: '2026-07-21'
+  status: minimal
+  artifacts_added: 1
+  pass: local-v1
