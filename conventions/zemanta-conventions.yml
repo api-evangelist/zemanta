@@ -1,0 +1,152 @@
+generated: '2026-08-12'
+method: searched
+source: https://dev.zemanta.com/one/api/
+docs: https://dev.zemanta.com/one/api/
+api: zemanta:teads-dsp-api
+base_url: https://oneapi.zemanta.com/rest/v1
+summary: >-
+  Cross-cutting runtime semantics of the Teads DSP REST Campaign Management API
+  (formerly the Zemanta One API), read from the published API reference.
+
+auth:
+  style: oauth2-client-credentials
+  header: 'Authorization: Bearer <access_token>'
+  token_url: https://oneapi.zemanta.com/o/token/
+  token_lifetime_seconds: 36000
+  detail: authentication/zemanta-authentication.yml
+
+http_methods:
+  GET: Retrieve an entity or a list of entities
+  POST: Create a new entity
+  PUT: Update an entity
+  DELETE: Remove an entity (used on campaign goals, publisher groups, keyword lists, deals, bid modifiers)
+  PATCH: not used — partial updates are done with PUT
+
+request_headers:
+- name: Content-Type
+  value: application/json
+  required_when: the request carries a JSON body (POST/PUT)
+- name: Api-Policy
+  value: strict
+  required: false
+  recommended: true
+  effect: >-
+    Tells the server to reject the request with 400 (Bad Request) if the JSON body
+    contains unknown fields, listing every unknown field in the error message. This is
+    the provider's opt-in strict-validation switch and is the closest thing the API has
+    to a schema-conformance guarantee.
+- name: Authorization
+  value: 'Bearer <access_token>'
+  required: true
+
+envelopes:
+  success:
+    shape: '{"data": <object|array>}'
+    note: Single entities and lists are both returned under a top-level `data` field.
+  list:
+    shape: '{"count": <int>, "next": <url|null>, "previous": <url|null>, "data": [...]}'
+  error:
+    shape: '{"errorCode": "<string>", "details": "<string>"}'
+    detail: errors/zemanta-problem-types.yml
+
+partial_updates:
+  supported: true
+  mechanism: PUT with a body containing only the changed fields
+  note: >-
+    "The API supports partial updates, which means that for all PUT actions ... you can
+    send only updated fields as the payload." Unsent fields retain their prior value.
+
+pagination:
+  default_style: marker-offset
+  styles:
+  - style: marker-offset
+    default: true
+    params:
+    - name: marker
+      description: Primary key of the last element on the previous page; the first page uses marker=0.
+    - name: limit
+      description: Maximum entries to return, up to 1000, defaults to 100.
+    response_fields: [count, next, data]
+    url_form: /rest/v1/{resourceListPath}/{?marker,limit}
+  - style: limit-offset
+    default: false
+    params:
+    - name: offset
+      description: Offset of the starting element of the page in the list.
+    - name: limit
+      description: Maximum entries to return, up to 1000, defaults to 100.
+    response_fields: [count, next, previous, data]
+    url_form: /rest/v1/{resourceListPath}/?offset={,limit}
+    warning: >-
+      The provider warns that limit-offset "might lead to slow responses with large lists" —
+      marker-offset is the recommended path.
+
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No idempotency key, no request-replay window and no de-duplication semantics are
+    documented anywhere in the API reference. POST creates are not safe to retry blindly.
+    A search of the full reference for "idempoten" returns nothing. Batch creation
+    (ads/creatives) is asynchronous via a batch id, which is the nearest thing to a
+    retry-safe create, but the batch POST itself is not idempotent.
+
+field_expansion:
+  supported: partial
+  mechanism: >-
+    Dedicated "with goals and budgets" variants of the campaign read/list operations
+    (GET /rest/v1/campaigns/{campaignId} vs the goals-and-budgets variant) rather than a
+    generic expand/fields query parameter. There is no sparse-fieldset parameter.
+
+metadata:
+  supported: false
+  note: No free-form metadata/custom-field bag is documented on the entities.
+
+request_tracing:
+  request_id_header: null
+  observed_response_header: x_z1_trace_id
+  note: >-
+    A per-request trace identifier `x_z1_trace_id` was observed on live responses from the
+    application (probe of https://dsp.outbrain.com/o/token/, 2026-08-12), but it is NOT
+    documented in the API reference and no request-side correlation header is published.
+
+versioning:
+  style: uri-path
+  current: v1
+  path: /rest/v1/
+  detail: lifecycle/zemanta-lifecycle.yml
+
+rate_limits:
+  limit: 30 requests per second per user
+  exhaustion_status: 429
+  headers: none documented
+  detail: rate-limits/zemanta-rate-limits.yml
+
+transport:
+  https_required: true
+  note: >-
+    "Starting from November 18th, our API will no longer accept any HTTP requests and
+    redirect them to HTTPS due to security reasons." The year is not stated in the notice.
+
+async_patterns:
+- pattern: batch upload
+  resources: [ads, creatives, video-assets]
+  mechanism: >-
+    POST creates a batch and returns a batch id; the caller polls
+    GET /rest/v1/adgroups/{adGroupId}/ads/batch/{batchId} or
+    GET /rest/v1/creatives/batch/{batchId} for status.
+- pattern: report jobs
+  resources: [reports]
+  mechanism: >-
+    POST /rest/v1/reports/jobs/ creates a report job; the caller polls
+    GET /rest/v1/reports/jobs/{jobId} until the report is ready.
+- pattern: video upload URL
+  resources: [video-assets]
+  mechanism: >-
+    Create the asset, GET /rest/v1/video-assets/{assetId}/upload-url for a signed upload
+    target, PUT the media there, then poll the asset for upload status.
+  note: These are polling patterns, not callbacks — the API publishes no webhooks.
+
+webhooks:
+  supported: false
+  note: No webhook, callback or event-subscription surface is documented.

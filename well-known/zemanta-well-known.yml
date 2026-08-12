@@ -1,0 +1,125 @@
+generated: '2026-08-12'
+method: probed
+source: live HTTP probes of every Zemanta host, 2026-08-12
+hosts_probed:
+- oneapi.zemanta.com
+- dev.zemanta.com
+- one.zemanta.com
+- www.zemanta.com
+probes:
+- host: oneapi.zemanta.com
+  path: /.well-known/security.txt
+  status: 302
+  redirect_to: https://www.outbrain.com/.well-known/security.txt
+  final_status: 200
+  content_type: text/plain; charset=utf-8
+  file: zemanta-security.txt
+  document: true
+  note: >-
+    The Zemanta API host does not serve security.txt itself; it 302-redirects to the
+    parent company's document. Outbrain acquired Zemanta in 2017 and the DSP now trades as
+    Teads DSP, so the redirect is the provider's own delegation of the disclosure surface.
+    Body captured verbatim in zemanta-security.txt (Contact + Policy, both pointing at
+    https://www.outbrain.com/security/bug-bounty/).
+- host: oneapi.zemanta.com
+  path: /.well-known/openid-configuration
+  status: 200
+  document: false
+  note: SPA catch-all — 6439-byte HTML shell (<!DOCTYPE html>), not a discovery document.
+- host: oneapi.zemanta.com
+  path: /.well-known/oauth-authorization-server
+  status: 200
+  document: false
+  note: SPA catch-all — same 6439-byte HTML shell. No RFC 8414 metadata is served.
+- host: oneapi.zemanta.com
+  path: /.well-known/oauth-protected-resource
+  status: 200
+  document: false
+  note: SPA catch-all — same 6439-byte HTML shell.
+- host: oneapi.zemanta.com
+  path: /.well-known/api-catalog
+  status: 200
+  document: false
+  note: SPA catch-all — same 6439-byte HTML shell. No RFC 9727 API catalog is served.
+- host: oneapi.zemanta.com
+  path: /.well-known/ai-plugin.json
+  status: 200
+  document: false
+  note: SPA catch-all — same 6439-byte HTML shell.
+- host: oneapi.zemanta.com
+  path: /.well-known/agent-card.json
+  status: 200
+  document: false
+  note: SPA catch-all — HTML, not an AgentCard. Rejected as a false positive.
+- host: oneapi.zemanta.com
+  path: /.well-known/agent.json
+  status: 200
+  document: false
+  note: SPA catch-all — HTML, not an AgentCard. Rejected as a false positive.
+- host: dev.zemanta.com
+  path: /.well-known/security.txt
+  status: 404
+  document: false
+- host: dev.zemanta.com
+  path: /.well-known/agent-card.json
+  status: 404
+  document: false
+- host: dev.zemanta.com
+  path: /.well-known/agent.json
+  status: 404
+  document: false
+- host: dev.zemanta.com
+  path: /llms.txt
+  status: 404
+  document: false
+- host: dev.zemanta.com
+  path: /robots.txt
+  status: 404
+  document: false
+- host: one.zemanta.com
+  path: /.well-known/security.txt
+  status: 301
+  redirect_to: https://dsp.outbrain.com/.well-known/security.txt
+  document: false
+  note: one.zemanta.com 301-redirects every path to the matching path on dsp.outbrain.com.
+- host: one.zemanta.com
+  path: /.well-known/agent-card.json
+  status: 301
+  redirect_to: https://dsp.outbrain.com/.well-known/agent-card.json
+  document: false
+- host: one.zemanta.com
+  path: /.well-known/agent.json
+  status: 301
+  redirect_to: https://dsp.outbrain.com/.well-known/agent.json
+  document: false
+- host: www.zemanta.com
+  path: /.well-known/security.txt
+  status: 406
+  document: false
+  note: >-
+    The marketing host rejects non-browser clients with 406 Not Acceptable (bot challenge);
+    no /.well-known/* path could be read there.
+- host: www.zemanta.com
+  path: /.well-known/agent-card.json
+  status: 406
+  document: false
+- host: www.zemanta.com
+  path: /robots.txt
+  status: 406
+  document: false
+
+summary:
+  documents_found: 1
+  documents:
+  - security.txt (via 302 delegation to www.outbrain.com)
+  api_catalog: false
+  openid_configuration: false
+  oauth_authorization_server: false
+  agent_card: false
+  ai_plugin: false
+  note: >-
+    Only one real /.well-known document is reachable from a Zemanta host, and it is served
+    by the parent company after a 302. No RFC 9727 api-catalog, no OAuth/OIDC discovery
+    document, and no A2A agent card. The 200s recorded above on oneapi.zemanta.com are the
+    Angular single-page-app catch-all (identical 6439-byte HTML for every unknown path) and
+    are recorded as misses, not hits.

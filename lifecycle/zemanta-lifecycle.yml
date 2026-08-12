@@ -1,0 +1,92 @@
+generated: '2026-08-12'
+method: searched
+source: https://dev.zemanta.com/one/api/
+docs: https://dev.zemanta.com/one/api/
+api: zemanta:teads-dsp-api
+
+versioning:
+  style: uri-path
+  current_version: v1
+  path_prefix: /rest/v1/
+  policy_published: false
+  note: >-
+    Only v1 has ever been published. There is no written version-support policy, no
+    version-lifetime commitment and no date-based or header-based version negotiation.
+
+deprecation:
+  policy_published: false
+  sunset_header: not documented
+  deprecation_header: not documented
+  rfc8594: false
+  practice: >-
+    Deprecation is signalled inline in the reference by marking individual FIELDS
+    "(deprecated)" rather than by a policy, a Sunset/Deprecation header or a dated
+    removal schedule.
+  deprecated_elements:
+  - element: campaign targeting `environments`
+    kind: field
+    status: deprecated
+    source: Campaign Targeting Settings table
+  - element: campaign targeting `os`
+    kind: field
+    status: deprecated
+    source: Campaign Targeting Settings table
+  - element: ad group targeting `interest`
+    kind: field
+    status: deprecated
+    source: Ad Group targeting table
+
+announcements:
+  channel: mailing list
+  name: Teads DSP API Announcements Mailing List
+  url: https://groups.google.com/forum/#!forum/zemanta-api-announcements/join
+  covers: new features and maintenance windows
+  evidence: >-
+    "If you want to be notified of new features and maintenance windows, please join the
+    Teads DSP API Announcements Mailing List."
+  note: >-
+    This is a subscription list, not a dated public changelog — there is no readable
+    release history, so no changelog/ artifact is emitted.
+
+changelog:
+  published: false
+  note: No dated changelog or release-notes page was found on any Zemanta or Teads DSP host.
+
+status_page:
+  published: false
+  probes:
+  - url: https://status.zemanta.com/
+    http_status: 0
+    result: DNS does not resolve
+  - url: https://status.outbrain.com/
+    http_status: 0
+    result: DNS does not resolve
+  - url: https://status.teads.com/
+    http_status: 0
+    result: DNS does not resolve
+  note: >-
+    No status page exists for this API. Maintenance windows are announced only through the
+    mailing list above.
+
+sla:
+  published: false
+  note: No uptime or support SLA is published on the public developer surface.
+
+breaking_change_notices:
+- date_published: unspecified year, November 18
+  change: >-
+    "Starting from November 18th, our API will no longer accept any HTTP requests and
+    redirect them to HTTPS due to security reasons."
+  type: transport
+  source: https://dev.zemanta.com/one/api/
+
+product_lifecycle:
+  founded: 2007
+  acquired_by: Outbrain
+  acquired: 2017
+  current_brand: Teads DSP
+  note: >-
+    The product line survived the acquisition and a further rebrand. The API reference now
+    titles itself "Teads DSP API" while continuing to serve from Zemanta-owned hosts
+    (oneapi.zemanta.com, dev.zemanta.com), and the console host one.zemanta.com 301-redirects
+    every path to the matching path on dsp.outbrain.com. The API surface is live, not retired.

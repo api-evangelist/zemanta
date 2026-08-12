@@ -1,0 +1,36 @@
+generated: '2026-08-12'
+method: searched
+source: https://www.zemanta.com/api/ and https://dev.zemanta.com/one/api/
+plan_count: 0
+pricing_page: null
+model: enterprise-sales-gated
+summary: >-
+  Teads DSP publishes no plans, tiers or price list for the Teads DSP API. Access is granted
+  through a sales relationship, not self-service sign-up, and the API itself is described as
+  carrying no separate charge on top of the advertising platform.
+evidence:
+- url: https://dev.zemanta.com/one/api/
+  quote: 'In order to use Teads DSP REST API, please contact your sales representative.'
+  http_status: 200
+- url: https://www.zemanta.com/api/
+  quote: 'No fees attached.'
+  http_status: 200
+  note: >-
+    The developer landing page states the API carries no fee; spend on the underlying
+    advertising platform is the commercial model. No rate card, minimum spend or tier
+    structure is published.
+- url: https://intercom.help/outbrain_dsp/en/articles/8225692-zemanta-api
+  quote: 'contact your CS representative first'
+  http_status: 200
+plans: []
+quotas:
+  documented: true
+  detail: rate-limits/zemanta-rate-limits.yml
+  note: >-
+    The only published usage constraint is the 30 requests-per-second per-user rate limit —
+    it is a technical limit, not a plan entitlement, and it is not tiered.
+note: >-
+  plan_count is 0 because the provider genuinely publishes none, not because none was looked
+  for. There is no /pricing page on www.zemanta.com reachable to a scripted client (the
+  marketing host answers 406 to non-browser user agents) and no pricing link on the developer
+  page. Because no pricing page exists, no Pricing pointer is wired into apis.yml.

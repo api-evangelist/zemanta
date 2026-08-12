@@ -1,0 +1,75 @@
+generated: '2026-08-12'
+method: searched
+source: https://dev.zemanta.com/one/api/
+docs: https://dev.zemanta.com/one/api/
+api: zemanta:teads-dsp-api
+format: vendor-json
+rfc9457: false
+content_type: application/json
+envelope:
+  shape: |
+    {
+      "errorCode": "ValidationError",
+      "details": "Name is required"
+    }
+  fields:
+  - name: errorCode
+    type: string
+    description: Machine-readable error class returned by the API.
+  - name: details
+    type: string
+    description: Human-readable explanation of what failed.
+  note: >-
+    The error envelope is a flat vendor JSON object. It is NOT RFC 9457
+    application/problem+json — there is no type/title/status/detail/instance member and
+    no problem+json content type. The envelope is also distinct from the success envelope,
+    which wraps payloads in a top-level `data` field.
+status_codes:
+- status: 200
+  meaning: OK
+  description: The request was successful.
+- status: 201
+  meaning: Created
+  description: Entity successfully created.
+- status: 400
+  meaning: Bad Request
+  description: >-
+    Invalid or missing required parameters. Also returned when the `Api-Policy: strict`
+    request header is set and the JSON body contains unknown fields — the response lists
+    every unknown field in the error message.
+- status: 401
+  meaning: Unauthorized
+  description: Authentication failed, check your access token.
+- status: 403
+  meaning: Forbidden
+  description: Not enough permissions for the desired action.
+- status: 429
+  meaning: Too Many Requests
+  description: >-
+    The per-user rate limit of 30 requests per second was exceeded
+    (see rate-limits/zemanta-rate-limits.yml).
+- status: 500
+  meaning: Server Error
+  description: Server error; the docs instruct the caller to contact Teads DSP support.
+error_codes:
+  published_registry: false
+  observed:
+  - code: ValidationError
+    status: 400
+    meaning: A field failed validation; `details` names the offending field.
+    remediation: "Correct the named field and retry. Sending `Api-Policy: strict` surfaces unknown fields up-front."
+    source: documented example payload
+  - code: invalid_client
+    status: 401
+    meaning: >-
+      OAuth2 token-endpoint error returned by POST /o/token/ when the client credentials
+      are missing or wrong; accompanied by `WWW-Authenticate: Bearer error="invalid_client"`.
+    remediation: Re-issue credentials at https://dsp.outbrain.com/o/applications/.
+    source: live probe of https://dsp.outbrain.com/o/token/ (HTTP 401, 2026-08-12)
+  note: >-
+    Teads DSP publishes no enumerated error-code registry. `ValidationError` is the only
+    class named in the documentation; `invalid_client` was observed live on the OAuth2
+    token endpoint. No other codes are asserted here because none are published.
+notes:
+- 204 is not in the published status table even though several DELETE operations exist; the docs do not state the success status for deletions.
+- Retry-After is not documented on 429 (see rate-limits/zemanta-rate-limits.yml).

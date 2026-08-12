@@ -1,0 +1,71 @@
+generated: '2026-08-12'
+method: searched
+source: https://dev.zemanta.com/one/api/
+docs: https://dev.zemanta.com/one/api/
+api: zemanta:teads-dsp-api
+summary: >-
+  The Teads DSP REST API (formerly the Zemanta One API) uses two-legged OAuth 2.0
+  with the client_credentials grant. Client credentials are self-issued from the
+  DSP console; the resulting bearer token is presented on every REST call.
+schemes:
+- key: oauth2ClientCredentials
+  type: oauth2
+  flow: clientCredentials
+  token_url: https://oneapi.zemanta.com/o/token/
+  token_endpoint_auth_method: client_secret_basic
+  token_request_content_type: application/x-www-form-urlencoded
+  grant_type: client_credentials
+  scopes:
+  - read
+  - write
+  token_type: Bearer
+  token_lifetime_seconds: 36000
+  token_lifetime_note: >-
+    Access tokens are valid for 10 hours; the docs instruct clients to cache and
+    reuse the token for the duration of its validity rather than re-issuing per call.
+  applied_to: all /rest/v1/ operations
+  evidence: >-
+    "Teads DSP REST API uses two-legged OAuth2 authentication using client credentials."
+    POST https://oneapi.zemanta.com/o/token/ with Authorization: Basic base64(client_id:client_secret)
+    and body grant_type=client_credentials returns {"access_token": ..., "token_type": "Bearer",
+    "expires_in": 36000, "scope": "read write"}.
+- key: bearerToken
+  type: http
+  scheme: bearer
+  header: Authorization
+  format: 'Bearer <access_token>'
+  applied_to: all /rest/v1/ operations
+  evidence: >-
+    "The client credentials are used to acquire an access token, which must then be
+    passed to all REST API calls as the header Authorization: Bearer <access_token>"
+credential_issuance:
+  self_service: partial
+  console_url: https://dsp.outbrain.com/o/applications/
+  steps:
+  - Log in to the Teads DSP console (one.zemanta.com now 301-redirects to dsp.outbrain.com).
+  - Open https://dsp.outbrain.com/o/applications/ and click "New Application".
+  - Name the application and save; the resulting Client ID and Client Secret are the API credentials.
+  gate: >-
+    API access itself is sales-gated — "In order to use Teads DSP REST API, please contact
+    your sales representative." The credential-creation screen is only reachable by an
+    authenticated DSP customer.
+  support_contact: api-support@zemanta.com
+probes:
+- url: https://oneapi.zemanta.com/o/token/
+  method: POST
+  http_status: 405
+  note: GET/HEAD rejected; the route exists.
+- url: https://dsp.outbrain.com/o/token/
+  method: POST
+  body: grant_type=client_credentials
+  http_status: 401
+  response: '{"error": "invalid_client"}'
+  headers_observed:
+  - 'www-authenticate: Bearer error="invalid_client"'
+  note: >-
+    Live, anonymous confirmation that the OAuth2 token endpoint is deployed and speaks
+    RFC 6749 / RFC 6750 error semantics. dsp.outbrain.com is the same Django application
+    as oneapi.zemanta.com (both emit the x_z1_trace_id header, "z1" = Zemanta One).
+notes:
+- No API-key, mutualTLS or OpenID Connect scheme is documented for this API.
+- No /.well-known/openid-configuration or /.well-known/oauth-authorization-server document is served on any Zemanta host (see well-known/zemanta-well-known.yml).

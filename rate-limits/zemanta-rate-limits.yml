@@ -1,0 +1,37 @@
+generated: '2026-08-12'
+method: searched
+source: https://dev.zemanta.com/one/api/
+docs: https://dev.zemanta.com/one/api/
+api: zemanta:teads-dsp-api
+limit_count: 1
+limits:
+- name: per-user request rate
+  scope: per-user
+  window: 1s
+  limit: 30
+  unit: requests
+  burst: null
+  applies_to: all /rest/v1/ operations
+  exhaustion_status: 429
+  exhaustion_meaning: Too Many Requests
+  evidence: >-
+    "Each Teads DSP user can perform a maximum of 30 requests per second to the Teads DSP
+    API. In case that limit is crossed, the API will start responding with HTTP status 429
+    (Too Many Requests). We suggest the implementation of client side request rate limiting
+    and graceful handling of HTTP status 429 responses."
+response_headers:
+  documented: []
+  note: >-
+    The API documents NO rate-limit response headers — no X-RateLimit-*, no RateLimit-*,
+    no Retry-After. A client learns it has been throttled only from the 429 status code,
+    so an agent cannot read remaining quota or a reset time from the runtime signal and
+    must implement client-side pacing as the docs advise.
+guidance:
+  provider_recommendation: Implement client-side request rate limiting and handle 429 gracefully.
+  retry_strategy_documented: false
+pagination_limits:
+  max_page_size: 1000
+  default_page_size: 100
+  note: >-
+    The `limit` query parameter on list endpoints is capped at 1000 and defaults to 100
+    (see conventions/zemanta-conventions.yml).

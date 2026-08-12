@@ -1,0 +1,34 @@
+generated: '2026-08-12'
+method: searched
+source: https://dev.zemanta.com/one/api/
+docs: https://dev.zemanta.com/one/api/
+api: zemanta:teads-dsp-api
+authorization_server: https://oneapi.zemanta.com/o/token/
+flow: clientCredentials
+scope_model: coarse
+scope_count: 2
+scopes:
+- name: read
+  description: >-
+    Read access to the Teads DSP campaign-management resources (accounts, credits,
+    campaigns, budgets, goals, ad groups, ads, creatives, audiences, publisher groups,
+    deals, keyword lists, reports and statistics).
+  source: token response
+- name: write
+  description: >-
+    Create and update access to the same campaign-management resources, including
+    POST/PUT/DELETE on campaigns, ad groups, ads, creatives, bid modifiers, deals
+    and keyword lists.
+  source: token response
+evidence: >-
+  The documented token response for POST https://oneapi.zemanta.com/o/token/ is
+  {"access_token": "...", "token_type": "Bearer", "expires_in": 36000, "scope": "read write"}.
+  The docs publish no per-resource scope reference page; "read write" is granted to the
+  application as a whole.
+notes:
+- >-
+  There is no published scopes/permissions reference beyond the read/write pair returned
+  in the token response — the API does not document per-resource or per-operation scopes.
+- >-
+  No /.well-known/oauth-authorization-server document is served, so the scope list could
+  not be confirmed from a discovery document (see well-known/zemanta-well-known.yml).

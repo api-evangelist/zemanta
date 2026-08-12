@@ -1,35 +1,43 @@
 aid: zemanta
 accessModel:
   pricing: unknown
-  onboarding: unknown
+  onboarding: sales
   trial: false
   try_now: false
   public: false
-  label: Unknown
-  confidence: low
-  source: []
-  generated: '2026-07-22'
-  method: derived
+  label: Sales-gated
+  confidence: high
+  source:
+  - https://dev.zemanta.com/one/api/
+  - https://intercom.help/outbrain_dsp/en/articles/8225692-zemanta-api
+  generated: '2026-08-12'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/zemanta.png
 name: Zemanta
-description: Zemanta was a native advertising and content-recommendation technology company founded in 2007
+description: >-
+  Zemanta is a native advertising and content-recommendation technology company founded in 2007
   (Ljubljana, Slovenia and New York), best known for Zemanta One, a self-serve programmatic demand-side
-  platform (DSP) for native advertising. Zemanta was acquired by Outbrain in 2017 and its DSP has since been
-  folded into the Outbrain / Teads advertising platform. The standalone one.zemanta.com console now redirects
-  to dsp.outbrain.com and the former developers.zemanta.com API documentation is no longer resolvable, so
-  there is no live first-party Zemanta public API surface today. This profile is retained in the API
-  Evangelist network as a venture-portfolio lead with domain-level metadata.
+  platform (DSP) for native advertising. Outbrain acquired Zemanta in 2017 and the DSP now trades as Teads
+  DSP. The product line survived both the acquisition and the rebrand, and its API is live — the Teads DSP
+  REST Campaign Management API, the former Zemanta One API, is still served from Zemanta-owned hosts, with
+  the API endpoint at https://oneapi.zemanta.com/rest/v1 and a complete public reference at
+  https://dev.zemanta.com/one/api/. The API covers accounts, credits, campaigns, budgets, goals, ad groups,
+  ads, creatives, video assets, bid modifiers, measurement services, conversion definitions, audiences,
+  publisher groups, deals, keyword lists, reporting and real-time statistics. Authentication is two-legged
+  OAuth 2.0 client credentials; access is granted through a sales relationship rather than self-service
+  sign-up. The console host one.zemanta.com 301-redirects every path to the matching path on
+  dsp.outbrain.com.
 url: https://raw.githubusercontent.com/api-evangelist/zemanta/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - seedcamp
 - union-square-ventures
-x-tier: stub
-x-tier-reason: acquired-folded-into-outbrain-teads
+x-tier: profiled
+x-tier-reason: acquired-by-outbrain-2017-api-live-as-teads-dsp
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-08-12'
 tags:
 - Company
 - Advertising
@@ -39,7 +47,53 @@ tags:
 - AdTech
 - Content Recommendation
 - Marketing
-apis: []
+- Campaign Management
+- Demand Side Platform
+- Media Buying
+apis:
+- aid: zemanta:teads-dsp-api
+  name: Teads DSP API (Zemanta One)
+  description: >-
+    The Teads DSP REST Campaign Management API, formerly the Zemanta One API. It lets Teads DSP
+    clients programmatically create and manage accounts, campaigns, budgets, campaign goals, ad groups, ad
+    group sources, ads, creatives, video assets, bid modifiers, measurement services, conversion definitions,
+    audiences, publisher groups, publisher blacklists, deals and keyword lists, and pull custom performance
+    reports and real-time statistics. Two-legged OAuth 2.0 client credentials, JSON payloads wrapped in a
+    data envelope, marker-offset pagination and a 30 request-per-second per-user rate limit.
+  humanURL: https://dev.zemanta.com/one/api/
+  baseURL: https://oneapi.zemanta.com/rest/v1
+  tags:
+  - Advertising
+  - Campaign Management
+  - Programmatic
+  - DSP
+  - Reporting
+  - Audiences
+  properties:
+  - type: Documentation
+    url: https://dev.zemanta.com/one/api/
+  - type: APIReference
+    url: https://dev.zemanta.com/one/api/
+  - type: Authentication
+    url: authentication/zemanta-authentication.yml
+  - type: OAuthScopes
+    url: scopes/zemanta-scopes.yml
+  - type: RateLimits
+    url: rate-limits/zemanta-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/zemanta-problem-types.yml
+  - type: Conventions
+    url: conventions/zemanta-conventions.yml
+  - type: DataModel
+    url: data-model/zemanta-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/zemanta-lifecycle.yml
+  - type: Conformance
+    url: conformance/zemanta-conformance.yml
+  - type: Plans
+    url: plans/zemanta-plans-pricing.yml
+  - type: Support
+    url: https://intercom.help/outbrain_dsp/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -54,8 +108,48 @@ common:
   url: https://vault.pactsafe.io/s/9ac72792-c7df-4d0d-832d-0ca873f73a64/legal.html#terms-of-service
 - type: PrivacyPolicy
   url: https://www.outbrain.com/privacy/privacy-policy-outbrain-dsp/
+- type: DeveloperPortal
+  url: https://www.zemanta.com/api/
+- type: Documentation
+  url: https://dev.zemanta.com/one/api/
+- type: APIReference
+  url: https://dev.zemanta.com/one/api/
+- type: Support
+  url: https://intercom.help/outbrain_dsp/
+- type: GitHubOrganization
+  url: https://github.com/Zemanta
+- type: Login
+  url: https://one.zemanta.com/
+- type: Authentication
+  url: authentication/zemanta-authentication.yml
+- type: OAuthScopes
+  url: scopes/zemanta-scopes.yml
+- type: RateLimits
+  url: rate-limits/zemanta-rate-limits.yml
+- type: ErrorCatalog
+  url: errors/zemanta-problem-types.yml
+- type: Conventions
+  url: conventions/zemanta-conventions.yml
+- type: DataModel
+  url: data-model/zemanta-data-model.yml
+- type: Lifecycle
+  url: lifecycle/zemanta-lifecycle.yml
+- type: Conformance
+  url: conformance/zemanta-conformance.yml
+- type: Plans
+  url: plans/zemanta-plans-pricing.yml
+- type: Packages
+  url: packages/zemanta-packages.yml
+- type: LLMsTxt
+  url: llms/zemanta-llms.txt
+- type: SecurityTxt
+  url: well-known/zemanta-security.txt
+- type: VulnerabilityDisclosure
+  url: security/zemanta-vulnerability-disclosure.yml
+- type: Security
+  url: security/zemanta-vulnerability-disclosure.yml
 x-enrichment:
-  date: '2026-07-21'
-  status: minimal
-  artifacts_added: 1
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 14
   pass: local-v1

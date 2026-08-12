@@ -1,0 +1,73 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org, crates.io, repo.packagist.org, GitHub search,
+  and the Teads DSP API reference at https://dev.zemanta.com/one/api/
+official_package_count: 0
+package_count: 2
+summary: >-
+  Zemanta / Teads DSP publishes NO first-party client library for the Teads DSP REST API.
+  The API reference documents raw HTTP only — there is no SDK section, no code samples in a
+  packaged language client, and no first-party repository under github.com/Zemanta that wraps
+  the API. Everything found in a public registry is third-party and, in every case, targets
+  the ORIGINAL 2007-era Zemanta content-recommendation/blogging API, not the DSP campaign
+  management API that is live today.
+packages:
+- language: ruby
+  name: zemanta
+  registry: rubygems
+  url: https://rubygems.org/gems/zemanta
+  repository: https://github.com/otobrglez/zemanta
+  official: false
+  author: Oto Brglez
+  version: 0.0.1
+  published: '2012-06-12'
+  downloads: 5194
+  targets: legacy Zemanta content-recommendation API
+  note: >-
+    Third-party. Last and only release 2012-06-12 — fourteen years stale and written against
+    an API generation that predates the Outbrain acquisition. Not usable against
+    oneapi.zemanta.com.
+- language: http
+  name: zemanta-api-postman-collection
+  registry: null
+  url: https://github.com/xy1m/zemanta-api-postman-collection
+  official: false
+  version: null
+  published: '2019-04-30'
+  note: >-
+    Third-party Postman collection for the Zemanta One API, last pushed 2019-04-30. No
+    registry to query, hence version: null. Not published or endorsed by the provider, so no
+    Postman pointer is wired into apis.yml.
+registry_probes:
+- registry: npm
+  query: zemanta
+  result: "0 results (registry.npmjs.org search returned total: 0)"
+  status: 200
+- registry: npm
+  package: zemanta
+  status: 404
+- registry: pypi
+  packages: [zemanta, zemanta-api, zemanta-one, z1-api]
+  status: 404
+- registry: crates.io
+  package: zemanta
+  status: 403
+  note: crates.io rejected the scripted request; no crate of this name is known.
+- registry: packagist
+  package: zemanta/zemanta
+  status: 404
+- registry: rubygems
+  package: zemanta
+  status: 200
+  note: The single hit above; third-party and abandoned.
+first_party_github:
+  org: https://github.com/Zemanta
+  public_repos: 15
+  api_clients: 0
+  note: >-
+    The Zemanta GitHub organisation is real and still maintained (Prebid.js fork pushed
+    2025-03-17), but it carries infrastructure and ad-tech engineering repos —
+    Prebid.js/prebid-server forks, a Go Avro codec fork, py-secretcrypt, django-statsd-influx,
+    mrgob, distlock — plus zem-conversion-pixel-gtm-template. None of them is a client library
+    for the Teads DSP REST API.

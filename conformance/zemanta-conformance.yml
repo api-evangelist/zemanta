@@ -1,0 +1,141 @@
+generated: '2026-08-12'
+method: derived
+source: https://dev.zemanta.com/one/api/ plus repo artifacts (authentication/, errors/, conventions/, rate-limits/, well-known/)
+api: zemanta:teads-dsp-api
+standards:
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  evidence: >-
+    Two-legged client_credentials grant against https://oneapi.zemanta.com/o/token/ with
+    client_secret_basic client authentication; the documented token response carries
+    access_token, token_type, expires_in and scope. A live anonymous POST returns
+    {"error": "invalid_client"} — an RFC 6749 error object.
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage (RFC 6750)
+  conforms: true
+  evidence: >-
+    'Authorization: Bearer <access_token>' on every call; a failed token request returns
+    'WWW-Authenticate: Bearer error="invalid_client"' (observed live 2026-08-12).
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: false
+  evidence: >-
+    /.well-known/oauth-authorization-server on oneapi.zemanta.com returns the SPA HTML
+    shell, not a metadata document.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: No /.well-known/openid-configuration document; no id_token, no OIDC flows documented.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors use a flat vendor envelope {"errorCode", "details"} with content type
+    application/json — no type/title/status/detail/instance, no application/problem+json.
+- id: rfc9116
+  name: security.txt
+  conforms: partial
+  evidence: >-
+    A security.txt with Contact and Policy is reachable from the API host via 302 to
+    www.outbrain.com, but it omits the mandatory Expires field.
+- id: rfc9727
+  name: api-catalog well-known URI
+  conforms: false
+  evidence: /.well-known/api-catalog returns the SPA HTML shell on every Zemanta host.
+- id: rfc8594
+  name: Sunset HTTP Header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header and no deprecation policy are documented; deprecation is
+    marked inline on individual fields in the reference.
+- id: pagination
+  name: Documented pagination
+  conforms: true
+  evidence: >-
+    Two documented styles — marker-offset (default) and limit-offset — with count/next/
+    previous/data response fields and a documented 1000 maximum, 100 default page size.
+- id: idempotency
+  name: Idempotency keys for unsafe methods
+  conforms: false
+  evidence: >-
+    No idempotency key, replay window or de-duplication semantics appear anywhere in the
+    API reference.
+- id: rate_limit_headers
+  name: RateLimit header fields for HTTP
+  conforms: false
+  evidence: >-
+    A 30 req/s per-user limit and a 429 status are documented, but no X-RateLimit-*,
+    RateLimit-* or Retry-After response headers are published.
+- id: openapi
+  name: OpenAPI description
+  conforms: false
+  evidence: >-
+    No public OpenAPI/Swagger document. A Swagger UI exists at
+    https://dsp.outbrain.com/swagger/ but it 302-redirects to
+    https://my.outbrain.com/login — the machine-readable description is behind
+    customer authentication.
+- id: asyncapi
+  name: AsyncAPI / event surface
+  conforms: false
+  not_applicable: true
+  evidence: >-
+    The API publishes no webhooks, callbacks or streaming surface, so there is no event
+    contract to describe. Asynchronous work (batch ad/creative upload, report jobs, video
+    upload) is exposed as polling, not as events.
+- id: mcp
+  name: Model Context Protocol server
+  conforms: false
+  evidence: No MCP endpoint was found on any Zemanta host.
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return the SPA HTML shell
+    (oneapi.zemanta.com) or 404 (dev.zemanta.com). No agent card is published.
+
+industry:
+- id: iab-content-taxonomy
+  name: IAB Content Taxonomy
+  conforms: true
+  evidence: >-
+    The reference publishes an "IAB Content categories" and "IAB Category" constants
+    reference used for contextual targeting, and links an IAB taxonomy id-mapping article
+    (https://intercom.help/outbrain_dsp/en/articles/8225809-iab-taxonomy-id-mapping).
+- id: openrtb
+  name: OpenRTB
+  conforms: unknown
+  evidence: >-
+    The platform is a demand-side platform transacting on programmatic exchanges and exposes
+    deals (PMP) and supply sources, which implies OpenRTB downstream, but the public API
+    reference makes no OpenRTB conformance claim. Recorded as unknown rather than asserted.
+- id: vast
+  name: IAB VAST
+  conforms: true
+  evidence: >-
+    Video asset upload accepts "the video file or VAST" as the uploaded artifact
+    (Video Asset Management, upload types).
+- id: iso3166
+  name: ISO 3166-1 alpha-2 / ISO 3166-2
+  conforms: true
+  evidence: >-
+    Geo targeting country and region constants are documented against
+    en.wikipedia.org/wiki/ISO_3166-1_alpha-2 and .../ISO_3166-2.
+- id: iana-tz
+  name: IANA tz database
+  conforms: true
+  evidence: Timezone values are documented against the tz database.
+- id: geonames
+  name: GeoNames
+  conforms: true
+  evidence: City/location constants are documented against https://www.geonames.org.
+
+compliance_certifications:
+  published: false
+  note: >-
+    No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP claim is made on any reachable Zemanta
+    surface, and no trust center is served on a zemanta.com host. Privacy compliance is
+    handled by the parent company's policy
+    (https://www.outbrain.com/privacy/privacy-policy-outbrain-dsp/) and an opt-out page
+    (https://www.zemanta.com/opt-out/). Because no certification is named, no Compliance
+    pointer is emitted.

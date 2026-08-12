@@ -1,0 +1,226 @@
+generated: '2026-08-12'
+method: searched
+source: https://dev.zemanta.com/one/api/
+docs: https://dev.zemanta.com/one/api/
+api: zemanta:teads-dsp-api
+note: >-
+  Derived from the published "Entities" table and the documented resource paths of the
+  Teads DSP API reference. No OpenAPI is published for this API (the Swagger UI is
+  authenticated), so relationships come from the provider's own prose and URL hierarchy
+  rather than from $ref graph analysis.
+
+entities:
+- name: Account
+  path: /rest/v1/accounts/
+  description: Teads DSP client account.
+  functionality: [read, create, update]
+  id_field: accountId
+- name: CreditItem
+  path: /rest/v1/accounts/{accountId}/credits/
+  description: Signed credit available for spending.
+  functionality: [read]
+  id_field: creditId
+- name: BudgetItem
+  path: /rest/v1/campaigns/{campaignId}/budgets/
+  description: Part of a credit assigned to a campaign as its budget.
+  functionality: [read, create, update]
+  id_field: budgetId
+- name: Campaign
+  path: /rest/v1/campaigns/
+  description: A collection of Ad Groups.
+  functionality: [read, create, update]
+  id_field: campaignId
+- name: CampaignGoal
+  path: /rest/v1/campaigns/{campaignId}/goals/
+  description: Campaign optimization goal.
+  functionality: [read, create, update, delete]
+  id_field: goalId
+- name: AdGroup
+  path: /rest/v1/adgroups/
+  description: A collection of Ads.
+  functionality: [read, create, update]
+  id_field: adGroupId
+- name: AdGroupSource
+  path: /rest/v1/adgroups/{adGroupId}/sources/
+  description: Per-source (supply partner) settings for an ad group.
+  functionality: [read, create, update]
+- name: Ad
+  path: /rest/v1/ads/
+  description: Connection between a Creative and an Ad Group.
+  functionality: [read, create, update]
+  id_field: adId
+- name: Creative
+  path: /rest/v1/creatives/
+  description: A single piece of promoted content.
+  functionality: [read, create, update]
+  id_field: creativeId
+- name: VideoAsset
+  path: /rest/v1/video-assets/
+  description: Uploaded video file or VAST tag backing a video creative.
+  functionality: [read, create]
+  id_field: assetId
+- name: BidModifier
+  path: /rest/v1/adgroups/{adGroupId}/bid-modifiers
+  description: Per-dimension bid multiplier attached to an ad group.
+  functionality: [read, create, update, delete]
+- name: MeasurementService
+  path: /rest/v1/measurement-services/
+  description: Third-party or first-party measurement integration.
+  functionality: [read, create, update]
+  id_field: serviceId
+- name: ConversionDefinition
+  path: /rest/v1/conversion-definitions/
+  description: Definition of a tracked conversion event.
+  functionality: [read, create, update]
+- name: Audience
+  path: /rest/v1/audiences/
+  description: Retargeting/first-party audience built from conversion rules.
+  functionality: [read, create, update]
+  id_field: audienceId
+- name: PublisherGroup
+  path: /rest/v1/publisher-groups/
+  description: Named list of publishers used for inclusion or exclusion targeting.
+  functionality: [read, create, update, delete]
+  id_field: groupId
+- name: PublisherGroupEntry
+  path: /rest/v1/publisher-groups/{groupId}/entries
+  description: A single publisher/placement inside a publisher group.
+  functionality: [read, create, update, delete]
+  id_field: entryId
+- name: Publisher
+  path: /rest/v1/publishers/{publisherId}
+  description: Publisher blacklist/whitelist status.
+  functionality: [read, update]
+  id_field: publisherId
+- name: Deal
+  path: /rest/v1/deals/
+  description: Programmatic deal (PMP) available to the account.
+  functionality: [read, create, update, delete]
+  id_field: dealId
+- name: KeywordList
+  path: /rest/v1/keyword-lists/
+  description: Named list of keywords used for contextual targeting.
+  functionality: [read, create, update, delete]
+  id_field: listId
+- name: KeywordListEntry
+  path: /rest/v1/keyword-lists/{listId}/entries
+  description: A single keyword inside a keyword list.
+  functionality: [read, create, delete]
+  id_field: entryId
+- name: ReportJob
+  path: /rest/v1/reports/jobs/
+  description: Asynchronous custom performance report request.
+  functionality: [read, create]
+  id_field: jobId
+- name: Geolocation
+  path: /rest/v1/geolocations/
+  description: Reference list of targetable geographies (country, region, DMA, city, postal code).
+  functionality: [read]
+- name: DmpCategory
+  path: /rest/v1/dmp-categories/
+  description: Reference list of third-party data segments available for targeting.
+  functionality: [read]
+- name: Source
+  path: /rest/v1/sources/
+  description: Reference list of supply sources/exchanges.
+  functionality: [read]
+
+relationships:
+- from: Account
+  to: CreditItem
+  type: has_many
+  via: accountId (path)
+- from: CreditItem
+  to: BudgetItem
+  type: has_many
+  via: credit assigned to a campaign as its budget
+- from: Account
+  to: Campaign
+  type: has_many
+  via: accountId
+- from: Campaign
+  to: BudgetItem
+  type: has_many
+  via: campaignId (path)
+- from: Campaign
+  to: CampaignGoal
+  type: has_many
+  via: campaignId (path)
+- from: Campaign
+  to: AdGroup
+  type: has_many
+  via: '"A Campaign is a collection of Ad Groups"'
+- from: AdGroup
+  to: Ad
+  type: has_many
+  via: '"An Ad Group is a collection of Ads"'
+- from: AdGroup
+  to: AdGroupSource
+  type: has_many
+  via: adGroupId (path)
+- from: AdGroup
+  to: BidModifier
+  type: has_many
+  via: adGroupId (path)
+- from: Ad
+  to: Creative
+  type: belongs_to
+  via: '"An Ad is the connection between a Creative and an Ad Group"'
+- from: Ad
+  to: AdGroup
+  type: belongs_to
+  via: '"An Ad is the connection between a Creative and an Ad Group"'
+- from: Creative
+  to: VideoAsset
+  type: has_one
+  via: video creatives reference an uploaded video asset
+- from: Account
+  to: MeasurementService
+  type: has_many
+  via: account-scoped measurement configuration
+- from: MeasurementService
+  to: ConversionDefinition
+  type: has_many
+  via: conversion definitions belong to a measurement service
+- from: ConversionDefinition
+  to: Audience
+  type: has_many
+  via: audience rules are built on conversion definitions
+- from: PublisherGroup
+  to: PublisherGroupEntry
+  type: has_many
+  via: groupId (path)
+- from: KeywordList
+  to: KeywordListEntry
+  type: has_many
+  via: listId (path)
+- from: KeywordList
+  to: AdGroup
+  type: has_many
+  via: keyword-list connections (/keyword-lists/{listId}/connections)
+- from: Deal
+  to: AdGroup
+  type: has_many
+  via: deal connections (/deals/{dealId}/connections)
+- from: AdGroup
+  to: PublisherGroup
+  type: has_many
+  via: targeting.publisherGroups.included / .excluded
+
+id_conventions:
+  prefixes: none
+  format: >-
+    Entity identifiers are opaque numeric-string ids exposed as `id` in the payload and as
+    typed path parameters (accountId, campaignId, adGroupId, adId, creativeId, ...).
+    The provider publishes no id-prefix scheme.
+
+reference_data:
+  note: >-
+    The reference publishes a large "Constants reference" section enumerating the closed
+    vocabularies used by these entities — currency, campaign type, delivery status, IAB
+    content categories, language, device/environment/OS/browser/connection/channel
+    targeting, ad positions and placement types, display ad sizes, video playback method,
+    player size, rewarded and skippability options, geo targeting types (DMA, country,
+    region, city, postal code), day/hour, creative types, batch statuses, audit statuses,
+    DMP type, conversion window and attribution model types.
+  source: https://dev.zemanta.com/one/api/
